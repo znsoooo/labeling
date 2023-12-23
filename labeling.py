@@ -1,3 +1,25 @@
+""" Labeling - YOLOv5 Dataset Image Labeling Tool
+
+Install:
+    python -m pip install opencv-python
+    python labeling.py
+
+Usage:
+    Mouse left: Create a new box
+    Mouse right: Remove the last box
+    Mouse wheel / Key direction: Show prev or next image
+    Key Number 0-9: Edit label name of current box (only support 0-9, default is 0)
+    Key Enter: Open current file in explorer
+    Key Escape: Exit this program
+
+About:
+    Author: Shixian Li (znsoooo)
+    Email: lsx7@sina.com
+    Homepage: https://github.com/znsoooo/labeling
+    License: MIT License.
+
+"""
+
 import os
 import tkinter
 
