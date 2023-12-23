@@ -143,7 +143,8 @@ class Labeling:
     def NextImage(self, next=0):
         self.idx = (self.idx + next) % len(self.files)
         self.img = ReadImage(self.img_path)
-        self.ReadLabel()
+        self.boxes = ReadLabel(self.lab_path, self.img_wh)
+        self.DrawBoxes()
 
     def OnLeftDown(self, x, y):
         self.boxes.append([0, x, y, x, y])
@@ -155,17 +156,11 @@ class Labeling:
 
     def OnLeftUp(self, x, y):
         self.boxes[-1][-2:] = [x, y]
-        self.SaveLabel()
+        SaveLabel(self.lab_path, self.img_wh, self.boxes)
+        self.DrawBoxes()
 
     def OnRightDown(self):
         self.boxes = self.boxes[:-1]
-        self.SaveLabel()
-
-    def ReadLabel(self):
-        self.boxes = ReadLabel(self.lab_path, self.img_wh)
-        self.DrawBoxes()
-
-    def SaveLabel(self):
         SaveLabel(self.lab_path, self.img_wh, self.boxes)
         self.DrawBoxes()
 
