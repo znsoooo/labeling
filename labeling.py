@@ -33,7 +33,8 @@ def ReadLabel(path, img_wh):
     for line in read(path).splitlines():
         id, x, y, w, h = map(float, line.split())
         x1, y1, x2, y2 = (x - w / 2, y - h / 2, x + w / 2, y + h / 2)
-        boxes.append([int(id), x1 * w0, y1 * h0, x2 * w0, y2 * h0])
+        box = [id, x1 * w0, y1 * h0, x2 * w0, y2 * h0]
+        boxes.append(list(map(int, box)))
     return boxes
 
 
@@ -135,9 +136,10 @@ class Labeling:
 
     def DrawBoxes(self):
         img = self.img.copy()
-        for i, (id, *rect) in enumerate(self.boxes):
-            label = str(id) if id else ''
-            DrawBox(img, rect, label, Hsv2Bgr(id / 10))
+        for i, (id, x1, y1, x2, y2) in enumerate(self.boxes):
+            if i == len(self.boxes) - 1:
+                img[y1:y2, x1:x2] = 256 - 0.75 * (256 - img[y1:y2, x1:x2])
+            DrawBox(img, (x1, y1, x2, y2), str(id) if id else '', Hsv2Bgr(id / 10))
         cv2.imshow(__title__, img)
 
     def NextImage(self, next=0):
