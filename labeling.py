@@ -128,11 +128,16 @@ class Labeling:
             self.NextImage(-1)
         elif key in [0x220000, 0x270000, 0x280000]:
             self.NextImage(1)
+        elif ord('0') <= key <= ord('9') and self.boxes:
+            self.boxes[-1][0] = key - ord('0')
+            SaveLabel(self.lab_path, self.img_wh, self.boxes)
+            self.DrawBoxes()
 
     def DrawBoxes(self):
         img = self.img.copy()
         for i, (id, *rect) in enumerate(self.boxes):
-            DrawBox(img, rect, str(id), Hsv2Bgr(id / 10))
+            label = str(id) if id else ''
+            DrawBox(img, rect, label, Hsv2Bgr(id / 10))
         cv2.imshow(__title__, img)
 
     def NextImage(self, next=0):
